@@ -1,0 +1,72 @@
+{
+  "name": "@ds-algo.ts/ds",
+  "version": "0.0.0",
+  "description": "High-performance TypeScript data structures library",
+  "type": "module",
+  "main": "./dist/ds.umd.cjs",
+  "module": "./dist/ds.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/ds.js",
+      "require": "./dist/ds.umd.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./linear": {
+      "import": "./dist/linear/index.js",
+      "types": "./dist/linear/index.d.ts"
+    },
+    "./tree": {
+      "import": "./dist/tree/index.js",
+      "types": "./dist/tree/index.d.ts"
+    },
+    "./heap": {
+      "import": "./dist/heap/index.js",
+      "types": "./dist/heap/index.d.ts"
+    },
+    "./graph": {
+      "import": "./dist/graph/index.js",
+      "types": "./dist/graph/index.d.ts"
+    },
+    "./hash": {
+      "import": "./dist/hash/index.js",
+      "types": "./dist/hash/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "rm -rf dist && tsc && vite build",
+    "clean": "rm -rf dist node_modules",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "typescript",
+    "data-structures",
+    "stack",
+    "queue",
+    "tree",
+    "graph",
+    "heap",
+    "linked-list"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ds-algo.ts/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "vitest": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
