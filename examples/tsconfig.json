@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@ds-algo.ts/shared": ["../packages/shared/dist"],
+      "@ds-algo.ts/ds": ["../packages/ds/dist"],
+      "@ds-algo.ts/algo": ["../packages/algo/dist"]
+    },
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
+}
