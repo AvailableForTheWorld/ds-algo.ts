@@ -19,9 +19,11 @@ pnpm build
 ```bash
 # Using tsx (recommended for development)
 npx tsx examples/stack-usage.ts
+npx tsx examples/queue-usage.ts
 
 # Or using Node.js (if compiled)
 node examples/stack-usage.ts
+node examples/queue-usage.ts
 ```
 
 ## Available Examples
@@ -41,13 +43,30 @@ Comprehensive Stack data structure examples covering:
 9. **Cloning** - Deep/shallow copying
 10. **Advanced Types** - Conditional, mapped, and partial types
 
+### `queue-usage.ts`
+
+Comprehensive Queue data structure examples covering:
+
+1. **Basic Usage** - Simple enqueue/dequeue operations
+2. **Custom Objects** - Working with complex types
+3. **Print Job Queue** - Real-world print queue simulation
+4. **Nested Generics** - Queue of queues and complex nesting
+5. **Union Types** - Mixed type queues and nullable values
+6. **Functional Programming** - Map, filter, forEach patterns
+7. **Capacity Management** - Bounded queues and capacity tracking
+8. **Iteration** - Front-to-rear iteration patterns
+9. **Cloning** - Shallow copying and immutability
+10. **Customer Service Queue** - FIFO service simulation
+11. **Event Processing** - Event handling queue
+12. **Advanced Types** - Conditional, mapped, and partial types
+
 ## Example Structure
 
 Each example follows this pattern:
 
 ```typescript
 // Import necessary types and classes
-import { Stack } from '../packages/ds/src/index.js'
+import { Stack, Queue } from '../packages/ds/src/index.js'
 
 // Define interfaces/types if needed
 interface MyType {
@@ -60,6 +79,7 @@ function exampleName() {
 
   // Example code with detailed comments
   const stack = new Stack<MyType>()
+  const queue = new Queue<MyType>()
 
   // Show results
   console.log('Result:' /* ... */)
@@ -128,16 +148,25 @@ interface Task {
 const tasks = new Stack<Task>()
 tasks.push({ id: 1, title: 'Example' }) // OK
 // tasks.push({ wrong: 'type' }); // Error!
+
+// Type-safe queue
+const taskQueue = new Queue<Task>()
+taskQueue.enqueue({ id: 1, title: 'Example' }) // OK
+// taskQueue.enqueue({ wrong: 'type' }); // Error!
 ```
 
 ### Functional Operations
 
 ```typescript
-const numbers = Stack.of(1, 2, 3, 4, 5)
+// Stack operations (LIFO)
+const stackNumbers = Stack.of(1, 2, 3, 4, 5)
+const stackResult = stackNumbers.filter((n) => n % 2 === 0).map((n) => n * 2)
+console.log(stackResult.toArray()) // [10, 8, 4]
 
-const result = numbers.filter((n) => n % 2 === 0).map((n) => n * 2)
-
-console.log(result.toArray()) // [10, 8, 4]
+// Queue operations (FIFO)
+const queueNumbers = Queue.of(1, 2, 3, 4, 5)
+const queueResult = queueNumbers.filter((n) => n % 2 === 0).map((n) => n * 2)
+console.log(queueResult.toArray()) // [4, 8, 10]
 ```
 
 ### Error Handling
@@ -145,6 +174,7 @@ console.log(result.toArray()) // [10, 8, 4]
 ```typescript
 import { EmptyStructureError } from '@ds-algo.ts/shared'
 
+// Stack error handling
 try {
   stack.pop()
 } catch (error) {
@@ -153,8 +183,18 @@ try {
   }
 }
 
+// Queue error handling
+try {
+  queue.dequeue()
+} catch (error) {
+  if (error instanceof EmptyStructureError) {
+    console.log('Queue is empty')
+  }
+}
+
 // Or use safe operations
-const value = stack.popSafe() // Returns undefined
+const stackValue = stack.popSafe() // Returns undefined if empty
+const queueValue = queue.dequeueSafe() // Returns undefined if empty
 ```
 
 ## Next Steps

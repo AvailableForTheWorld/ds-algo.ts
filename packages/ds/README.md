@@ -76,6 +76,59 @@ const numbers = Stack.of(1, 2, 3, 4, 5)
 const fromArray = Stack.from([1, 2, 3])
 ```
 
+#### Queue
+
+A First-In-First-Out (FIFO) data structure.
+
+```typescript
+import { Queue } from '@ds-algo.ts/ds'
+
+// Basic usage
+const queue = new Queue<number>()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+
+console.log(queue.peekFront()) // 1
+console.log(queue.dequeue()) // 1
+console.log(queue.size()) // 2
+
+// With options
+const limitedQueue = new Queue<string>({
+  maxCapacity: 100,
+  initialElements: ['first', 'second']
+})
+
+// Type-safe operations
+interface Task {
+  id: number
+  priority: number
+  description: string
+}
+
+const taskQueue = new Queue<Task>()
+taskQueue.enqueue({ id: 1, priority: 1, description: 'First task' })
+taskQueue.enqueue({ id: 2, priority: 5, description: 'Second task' })
+
+// Functional operations
+const highPriority = taskQueue.filter((task) => task.priority > 3)
+const taskIds = taskQueue.map((task) => task.id)
+
+// Safe operations (no exceptions)
+const maybeTask = taskQueue.dequeueSafe() // Task | undefined
+const maybeFront = taskQueue.peekFrontSafe() // Task | undefined
+const maybeRear = taskQueue.peekRearSafe() // Task | undefined
+
+// Iteration
+for (const task of taskQueue) {
+  console.log(task.description)
+}
+
+// Static factory methods
+const numbers = Queue.of(1, 2, 3, 4, 5)
+const fromArray = Queue.from([1, 2, 3])
+```
+
 ### API Reference
 
 #### Stack Methods
@@ -124,6 +177,53 @@ const fromArray = Stack.from([1, 2, 3])
 
 - `Stack.from<T>(iterable: Iterable<T>, options?): Stack<T>`
 - `Stack.of<T>(...elements: T[]): Stack<T>`
+
+#### Queue Methods
+
+##### Core Operations
+
+- `enqueue(element: T): this` - Add element to rear (O(1))
+- `dequeue(): T` - Remove and return front element (O(n))
+- `peekFront(): T` - View front element without removing (O(1))
+- `peekRear(): T` - View rear element without removing (O(1))
+- `dequeueSafe(): T | undefined` - Safe dequeue without exceptions
+- `peekFrontSafe(): T | undefined` - Safe peek front without exceptions
+- `peekRearSafe(): T | undefined` - Safe peek rear without exceptions
+
+##### Inspection
+
+- `size(): number` - Get number of elements
+- `isEmpty(): boolean` - Check if queue is empty
+- `isFull(): boolean` - Check if at max capacity
+- `remainingCapacity(): number` - Get remaining space
+
+##### Collection Operations
+
+- `clear(): void` - Remove all elements
+- `toArray(): T[]` - Convert to array (front to rear)
+- `contains(predicate: PredicateFn<T>): boolean` - Check for element
+- `find(predicate: PredicateFn<T>): T | undefined` - Find element
+
+##### Functional Operations
+
+- `filter(predicate: PredicateFn<T>): Queue<T>` - Create filtered queue
+- `map<U>(mapper: MapperFn<T, U>): Queue<U>` - Transform elements
+- `forEach(callback: (value: T, index: number) => void): void` - Iterate
+
+##### Iteration
+
+- `[Symbol.iterator]()` - Iterate front to rear
+
+##### Utility
+
+- `clone(): Queue<T>` - Create shallow copy
+- `toString(): string` - String representation
+- `toJSON()` - JSON representation
+
+##### Static Methods
+
+- `Queue.from<T>(iterable: Iterable<T>, options?): Queue<T>`
+- `Queue.of<T>(...elements: T[]): Queue<T>`
 
 ## Advanced Usage
 
@@ -188,11 +288,28 @@ nullableStack.push(null)
 
 ## Performance
 
+### Stack
+
 | Operation | Time Complexity | Space Complexity |
 | --------- | --------------- | ---------------- |
 | push      | O(1)\*          | O(1)             |
 | pop       | O(1)            | O(1)             |
 | peek      | O(1)            | O(1)             |
+| size      | O(1)            | O(1)             |
+| clear     | O(1)            | O(1)             |
+| toArray   | O(n)            | O(n)             |
+| filter    | O(n)            | O(n)             |
+| map       | O(n)            | O(n)             |
+| clone     | O(n)            | O(n)             |
+
+### Queue
+
+| Operation | Time Complexity | Space Complexity |
+| --------- | --------------- | ---------------- |
+| enqueue   | O(1)\*          | O(1)             |
+| dequeue   | O(n)            | O(1)             |
+| peekFront | O(1)            | O(1)             |
+| peekRear  | O(1)            | O(1)             |
 | size      | O(1)            | O(1)             |
 | clear     | O(1)            | O(1)             |
 | toArray   | O(n)            | O(n)             |
