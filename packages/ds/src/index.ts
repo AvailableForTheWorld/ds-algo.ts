@@ -4,8 +4,8 @@
  */
 
 // Linear data structures
-export { Stack, Queue } from './linear'
-export type { StackOptions, QueueOptions } from './linear'
+export { Stack, Queue, Deque } from './linear'
+export type { StackOptions, QueueOptions, DequeOptions } from './linear'
 
 // Re-export common types from shared
 export type { Collection } from '@ds-algo.ts/shared'

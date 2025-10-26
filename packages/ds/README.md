@@ -129,6 +129,68 @@ const numbers = Queue.of(1, 2, 3, 4, 5)
 const fromArray = Queue.from([1, 2, 3])
 ```
 
+#### Deque
+
+A Double-Ended Queue that allows insertion and deletion at both ends.
+
+```typescript
+import { Deque } from '@ds-algo.ts/ds'
+
+// Basic usage
+const deque = new Deque<number>()
+deque.addRear(2)
+deque.addFront(1)
+deque.addRear(3)
+
+console.log(deque.peekFront()) // 1
+console.log(deque.peekRear())  // 3
+console.log(deque.removeFront()) // 1
+console.log(deque.removeRear())  // 3
+
+// With options
+const limitedDeque = new Deque<string>({
+  maxCapacity: 100,
+  initialElements: ['first', 'second']
+})
+
+// Type-safe operations
+interface Task {
+  id: number
+  priority: number
+  description: string
+}
+
+const taskDeque = new Deque<Task>()
+// Add high priority to front
+taskDeque.addFront({ id: 1, priority: 10, description: 'Urgent task' })
+// Add normal priority to rear
+taskDeque.addRear({ id: 2, priority: 5, description: 'Normal task' })
+
+// Functional operations
+const highPriority = taskDeque.filter((task) => task.priority > 7)
+const taskIds = taskDeque.map((task) => task.id)
+
+// Safe operations (no exceptions)
+const maybeFront = taskDeque.removeFrontSafe() // Task | undefined
+const maybeRear = taskDeque.removeRearSafe() // Task | undefined
+
+// Reverse operations
+const reversed = taskDeque.reversed() // New reversed deque
+taskDeque.reverse() // In-place reverse
+
+// Iteration (front to rear or rear to front)
+for (const task of taskDeque) {
+  console.log(task.description)
+}
+for (const task of taskDeque.rearToFront()) {
+  console.log(task.description)
+}
+
+// Static factory methods
+const numbers = Deque.of(1, 2, 3, 4, 5)
+const fromArray = Deque.from([1, 2, 3])
+```
+
 ### API Reference
 
 #### Stack Methods
@@ -225,6 +287,59 @@ const fromArray = Queue.from([1, 2, 3])
 - `Queue.from<T>(iterable: Iterable<T>, options?): Queue<T>`
 - `Queue.of<T>(...elements: T[]): Queue<T>`
 
+#### Deque Methods
+
+##### Core Operations
+
+- `addFront(element: T): this` - Add element to front (O(n))
+- `addRear(element: T): this` - Add element to rear (O(1))
+- `removeFront(): T` - Remove and return front element (O(n))
+- `removeRear(): T` - Remove and return rear element (O(1))
+- `peekFront(): T` - View front element without removing (O(1))
+- `peekRear(): T` - View rear element without removing (O(1))
+- `removeFrontSafe(): T | undefined` - Safe remove front without exceptions
+- `removeRearSafe(): T | undefined` - Safe remove rear without exceptions
+- `peekFrontSafe(): T | undefined` - Safe peek front without exceptions
+- `peekRearSafe(): T | undefined` - Safe peek rear without exceptions
+
+##### Inspection
+
+- `size(): number` - Get number of elements
+- `isEmpty(): boolean` - Check if deque is empty
+- `isFull(): boolean` - Check if at max capacity
+- `remainingCapacity(): number` - Get remaining space
+
+##### Collection Operations
+
+- `clear(): void` - Remove all elements
+- `toArray(): T[]` - Convert to array (front to rear)
+- `contains(predicate: PredicateFn<T>): boolean` - Check for element
+- `find(predicate: PredicateFn<T>): T | undefined` - Find element
+
+##### Functional Operations
+
+- `filter(predicate: PredicateFn<T>): Deque<T>` - Create filtered deque
+- `map<U>(mapper: MapperFn<T, U>): Deque<U>` - Transform elements
+- `forEach(callback: (value: T, index: number) => void): void` - Iterate
+
+##### Iteration
+
+- `[Symbol.iterator]()` - Iterate front to rear
+- `rearToFront()` - Iterate rear to front
+
+##### Utility
+
+- `clone(): Deque<T>` - Create shallow copy
+- `reverse(): this` - Reverse in place
+- `reversed(): Deque<T>` - Create new reversed deque
+- `toString(): string` - String representation
+- `toJSON()` - JSON representation
+
+##### Static Methods
+
+- `Deque.from<T>(iterable: Iterable<T>, options?): Deque<T>`
+- `Deque.of<T>(...elements: T[]): Deque<T>`
+
 ## Advanced Usage
 
 ### With Custom Types
@@ -316,6 +431,24 @@ nullableStack.push(null)
 | filter    | O(n)            | O(n)             |
 | map       | O(n)            | O(n)             |
 | clone     | O(n)            | O(n)             |
+
+### Deque
+
+| Operation    | Time Complexity | Space Complexity |
+| ------------ | --------------- | ---------------- |
+| addFront     | O(n)            | O(1)             |
+| addRear      | O(1)\*          | O(1)             |
+| removeFront  | O(n)            | O(1)             |
+| removeRear   | O(1)            | O(1)             |
+| peekFront    | O(1)            | O(1)             |
+| peekRear     | O(1)            | O(1)             |
+| size         | O(1)            | O(1)             |
+| clear        | O(1)            | O(1)             |
+| reverse      | O(n)            | O(1)             |
+| toArray      | O(n)            | O(n)             |
+| filter       | O(n)            | O(n)             |
+| map          | O(n)            | O(n)             |
+| clone        | O(n)            | O(n)             |
 
 \*Amortized time complexity
 

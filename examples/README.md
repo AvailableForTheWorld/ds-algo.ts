@@ -20,10 +20,12 @@ pnpm build
 # Using tsx (recommended for development)
 npx tsx examples/stack-usage.ts
 npx tsx examples/queue-usage.ts
+npx tsx examples/deque-usage.ts
 
 # Or using Node.js (if compiled)
 node examples/stack-usage.ts
 node examples/queue-usage.ts
+node examples/deque-usage.ts
 ```
 
 ## Available Examples
@@ -60,13 +62,29 @@ Comprehensive Queue data structure examples covering:
 11. **Event Processing** - Event handling queue
 12. **Advanced Types** - Conditional, mapped, and partial types
 
+### `deque-usage.ts`
+
+Comprehensive Deque (Double-Ended Queue) data structure examples covering:
+
+1. **Basic Usage** - Adding and removing from both ends
+2. **Custom Objects** - Priority task management
+3. **Sliding Window Maximum** - Algorithm implementation
+4. **Palindrome Checker** - String validation with deque
+5. **Browser History** - Navigation simulation
+6. **Work Stealing Queue** - Multi-threaded work distribution
+7. **Undo/Redo System** - Command pattern implementation
+8. **Functional Programming** - Map, filter, reverse patterns
+9. **Iteration** - Front-to-rear and rear-to-front patterns
+10. **Multi-Priority Scheduler** - Task scheduling system
+11. **Advanced Types** - Conditional, mapped, and partial types
+
 ## Example Structure
 
 Each example follows this pattern:
 
 ```typescript
 // Import necessary types and classes
-import { Stack, Queue } from '../packages/ds/src/index.js'
+import { Stack, Queue, Deque } from '../packages/ds/src/index.js'
 
 // Define interfaces/types if needed
 interface MyType {
@@ -80,6 +98,7 @@ function exampleName() {
   // Example code with detailed comments
   const stack = new Stack<MyType>()
   const queue = new Queue<MyType>()
+  const deque = new Deque<MyType>()
 
   // Show results
   console.log('Result:' /* ... */)
@@ -153,6 +172,12 @@ tasks.push({ id: 1, title: 'Example' }) // OK
 const taskQueue = new Queue<Task>()
 taskQueue.enqueue({ id: 1, title: 'Example' }) // OK
 // taskQueue.enqueue({ wrong: 'type' }); // Error!
+
+// Type-safe deque
+const taskDeque = new Deque<Task>()
+taskDeque.addRear({ id: 1, title: 'Example' }) // OK
+taskDeque.addFront({ id: 2, title: 'Urgent' }) // OK
+// taskDeque.addRear({ wrong: 'type' }); // Error!
 ```
 
 ### Functional Operations
@@ -167,6 +192,12 @@ console.log(stackResult.toArray()) // [10, 8, 4]
 const queueNumbers = Queue.of(1, 2, 3, 4, 5)
 const queueResult = queueNumbers.filter((n) => n % 2 === 0).map((n) => n * 2)
 console.log(queueResult.toArray()) // [4, 8, 10]
+
+// Deque operations (Double-ended)
+const dequeNumbers = Deque.of(1, 2, 3, 4, 5)
+const dequeResult = dequeNumbers.filter((n) => n % 2 === 0).map((n) => n * 2)
+console.log(dequeResult.toArray()) // [4, 8, 10]
+console.log(dequeResult.reversed().toArray()) // [10, 8, 4]
 ```
 
 ### Error Handling
@@ -192,9 +223,20 @@ try {
   }
 }
 
+// Deque error handling
+try {
+  deque.removeFront() // or deque.removeRear()
+} catch (error) {
+  if (error instanceof EmptyStructureError) {
+    console.log('Deque is empty')
+  }
+}
+
 // Or use safe operations
 const stackValue = stack.popSafe() // Returns undefined if empty
 const queueValue = queue.dequeueSafe() // Returns undefined if empty
+const dequeFront = deque.removeFrontSafe() // Returns undefined if empty
+const dequeRear = deque.removeRearSafe() // Returns undefined if empty
 ```
 
 ## Next Steps
